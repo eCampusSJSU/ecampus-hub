@@ -1,0 +1,30 @@
+{
+  "name": "ecampus-hub",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "ajv": "^6.5.3",
+    "axios": "^0.18.0",
+    "base64-min": "^2.0.0",
+    "history": "^4.7.2",
+    "hmacsha1": "^1.0.0",
+    "md5-hex": "^2.0.0",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-loaders": "^3.0.1",
+    "react-notification-system": "^0.2.17",
+    "react-notification-system-redux": "^1.2.0",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "1.1.4",
+    "redux": "^4.0.0",
+    "redux-persist": "^5.10.0",
+    "redux-thunk": "^2.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

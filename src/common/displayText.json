@@ -1,0 +1,5 @@
+{
+  "ERROR_MESSAGE": "An error occurred. Please try again.",
+  "NO_FILE_ERROR": "File(s) not attached. Please try again.",
+  "INVALID_FILE_FORMAT_ERROR": "Invalid file(s) format. Please try again."
+}
