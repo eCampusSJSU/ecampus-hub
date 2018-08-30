@@ -5,10 +5,9 @@
   "dependencies": {
     "ajv": "^6.5.3",
     "axios": "^0.18.0",
-    "base64-min": "^2.0.0",
     "history": "^4.7.2",
     "hmacsha1": "^1.0.0",
-    "md5-hex": "^2.0.0",
+    "md5": "^2.2.1",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-loaders": "^3.0.1",

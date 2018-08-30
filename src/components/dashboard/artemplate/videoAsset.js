@@ -149,9 +149,10 @@ class VideoAsset extends Component {
                                                 onClick={(event) => this.uploadFile(event, this.imageTarget)}>
                                                     <span className="text-vertical-align-center">
                                                         <i className="material-icons">image</i>&nbsp;
-                                                        Upload Image Target (format: .jpeg, .png)
+                                                        Upload Image Target
                                                     </span>
                                             </button>
+                                            <span className="badge badge-info text-warning" style={{backgroundColor: 'transparent'}}>(format: .jpg, .jpeg, .png)</span>
                                         </div>
                                         <div className="col"
                                              style={{
@@ -181,9 +182,10 @@ class VideoAsset extends Component {
                                                 onClick={(event) => this.uploadFile(event, this.linkedVideo)}>
                                                     <span className="text-vertical-align-center">
                                                         <i className="material-icons">movie_creation</i>&nbsp;
-                                                        Upload Linked Video (format: .mp4, .avi, .3gp)
+                                                        Upload Linked Video
                                                     </span>
                                             </button>
+                                            <span className="badge badge-info text-danger" style={{backgroundColor: 'transparent'}}>(format: .mp4, .avi, .3gp)</span>
                                         </div>
                                         <div className="col"
                                              style={{

@@ -2,8 +2,7 @@ import axios from 'axios';
 import {actionTypes, displayText} from '../common';
 import Notifications from 'react-notification-system-redux';
 import hmacsha1 from 'hmacsha1';
-import md5Hex from 'md5-hex';
-import * as base64 from 'base64-min';
+import md5 from 'md5';
 import * as constants from "../common/constants";
 
 export const addVideoAsset = (imageTarget, linkedVideo, token) => {
@@ -167,7 +166,7 @@ const uploadTargetImageToVuforiaCloudDatabase = (imageTarget, linkedVideoID) => 
                 "name": imageTarget.name,
                 "width": 1,
                 "image": image,
-                "application_metadata": base64.encode(getLinkedVideoPublicURL(linkedVideoID))
+                "application_metadata": btoa(getLinkedVideoPublicURL(linkedVideoID))
             };
 
             const date = new Date().toUTCString();
@@ -179,6 +178,9 @@ const uploadTargetImageToVuforiaCloudDatabase = (imageTarget, linkedVideoID) => 
                     'Accept': 'application/json'
                 }
             };
+
+            // console.log(data);
+            // console.log(config);
 
             // Returns a promise
             return axios
@@ -215,9 +217,9 @@ const getVuforiaSignature = (method, content, contentType, date, requestPath) =>
         Request-Path;
     */
 
-    const stringToSign = method + "\n" + md5Hex(JSON.stringify(content)) + "\n" + contentType + "\n" + date + "\n" + requestPath;
+    const stringToSign = method + "\n" + md5(JSON.stringify(content)) + "\n" + contentType + "\n" + date + "\n" + requestPath;
 
-    return base64.encode(hmacsha1(constants.VUFORIA_SERVER_ACCESS_KEY, stringToSign));
+    return btoa(hmacsha1(constants.VUFORIA_SERVER_ACCESS_KEY, stringToSign));
 };
 
 const imageToBase64 = (image) => {
@@ -230,5 +232,5 @@ const imageToBase64 = (image) => {
 };
 
 const getLinkedVideoPublicURL = (linkedVideoID) => {
-    return base64.encode(constants.GOOGLE_DRIVE_PUBLIC_URL + linkedVideoID);
+    return btoa(constants.GOOGLE_DRIVE_PUBLIC_URL + linkedVideoID);
 };
