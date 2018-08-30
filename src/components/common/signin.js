@@ -121,9 +121,11 @@ class SignIn extends Component {
                     <div className="container-fluid page-align-center" style={{height: '100vh'}}>
                         <div className="col-11 col-sm-11 col-md-5 col-lg-4 col-xl-4">
                             <div className="card">
-                                <div className="content text-center" style={{padding: '25px'}}>
+                                <div className="header text-center">
                                     <h4 className="title">Welcome to the eCampus Hub</h4>
-                                    <br/><br/>
+                                </div>
+                                <br/>
+                                <div className="content text-center" style={{padding: '25px'}}>
                                     <button className="btn btn-danger btn-wd"
                                             onClick={() => this.signinWithGoogle()}>
                                     <span className="text-vertical-align-center">
