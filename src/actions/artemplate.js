@@ -187,7 +187,7 @@ const uploadTargetImageToVuforiaCloudDatabase = (imageTarget, linkedVideoID) => 
             return axios
                 .post(`${constants.VUFORIA_SERVICE_URL}?action=createImageTarget`, data)
                 .then(response => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     // Dispatch another action to consume data
                     if (response.status === 200) {
                         return true;
@@ -196,7 +196,7 @@ const uploadTargetImageToVuforiaCloudDatabase = (imageTarget, linkedVideoID) => 
                     }
                 })
                 .catch(error => {
-                    console.log(error);
+                    // console.log(error);
                     throw error;
                 });
 
