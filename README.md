@@ -28,6 +28,7 @@
       ],
       "VUFORIA_API": "https://vws.vuforia.com",
       "VUFORIA_SERVER_ACCESS_KEY": <...>,
-      "VUFORIA_SERVER_SECRET_KEY": <...>
+      "VUFORIA_SERVER_SECRET_KEY": <...>,
+      "VUFORIA_SERVICE_URL": <...>
     }
     ```

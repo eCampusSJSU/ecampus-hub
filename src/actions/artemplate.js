@@ -31,26 +31,31 @@ export const addVideoAsset = (imageTarget, linkedVideo, token) => {
             }));
         }
 
+        dispatch({
+            type: actionTypes.ADD_VIDEO_ASSET,
+            status: 'WAITING'
+        });
+
         // Returns a promise
-        uploadFileToGoogleDrive(linkedVideo, {
+        return uploadFileToGoogleDrive(linkedVideo, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': linkedVideo.mimeType
             }
         }, token)
             .then(id => {
-                uploadTargetImageToVuforiaCloudDatabase(imageTarget, id)
+                return uploadTargetImageToVuforiaCloudDatabase(imageTarget, id)
                     .then(success => {
                         if (success) {
-                            dispatch({
-                                type: actionTypes.ADD_VIDEO_ASSET,
-                                status: 'SUCCESS'
-                            });
                             dispatch(Notifications.success({
                                 title: 'Success',
                                 message: 'Added video asset successfully.',
                                 position: 'tr'
                             }));
+                            return dispatch({
+                                type: actionTypes.ADD_VIDEO_ASSET,
+                                status: 'SUCCESS'
+                            });
                         } else {
                             throw {error: "error"};
                         }
@@ -71,11 +76,6 @@ export const addVideoAsset = (imageTarget, linkedVideo, token) => {
                     position: 'tr'
                 }));
             });
-
-        dispatch({
-            type: actionTypes.ADD_VIDEO_ASSET,
-            status: 'WAITING'
-        });
     };
 };
 
@@ -157,7 +157,7 @@ const createPermissionsForFileOnGoogleDrive = (fileId, permissions, config) => {
 };
 
 const uploadTargetImageToVuforiaCloudDatabase = (imageTarget, linkedVideoID) => {
-    imageToBase64(imageTarget.content)
+    return imageToBase64(imageTarget.content)
         .then(image => {
             if (image === undefined) {
                 throw 'error';
@@ -166,26 +166,28 @@ const uploadTargetImageToVuforiaCloudDatabase = (imageTarget, linkedVideoID) => 
                 "name": imageTarget.name,
                 "width": 1,
                 "image": image,
+                "active_flag": true,
                 "application_metadata": btoa(getLinkedVideoPublicURL(linkedVideoID))
             };
 
             const date = new Date().toUTCString();
 
-            const config = {
+            /*const config = {
                 headers: {
                     'Authorization': `VWS ${constants.VUFORIA_SERVER_ACCESS_KEY}:${getVuforiaSignature('POST', data, 'application/json', date, '/targets')}`,
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 }
-            };
+            };*/
 
             // console.log(data);
             // console.log(config);
 
             // Returns a promise
             return axios
-                .post(`${constants.VUFORIA_API}/targets`, data, config)
+                .post(`${constants.VUFORIA_SERVICE_URL}?action=createImageTarget`, data)
                 .then(response => {
+                    console.log(response.data);
                     // Dispatch another action to consume data
                     if (response.status === 200) {
                         return true;
@@ -194,6 +196,7 @@ const uploadTargetImageToVuforiaCloudDatabase = (imageTarget, linkedVideoID) => 
                     }
                 })
                 .catch(error => {
+                    console.log(error);
                     throw error;
                 });
 
