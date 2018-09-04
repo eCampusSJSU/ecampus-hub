@@ -167,7 +167,7 @@ const uploadTargetImageToVuforiaCloudDatabase = (imageTarget, linkedVideoID) => 
                 "width": 1,
                 "image": image,
                 "active_flag": true,
-                "application_metadata": btoa(getLinkedVideoPublicURL(linkedVideoID))
+                "application_metadata": getLinkedVideoPublicURL(linkedVideoID)
             };
 
             const date = new Date().toUTCString();
