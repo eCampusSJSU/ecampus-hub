@@ -241,7 +241,7 @@ const uploadTargetImageToVuforiaCloudDatabase = (imageTarget, linkedAssetID, typ
                 "width": 1,
                 "image": image,
                 "active_flag": true,
-                "application_metadata": getLinkedAssetPublicURL(linkedAssetID) + ';' + type
+                "application_metadata": getLinkedAssetPublicURL(linkedAssetID, type)
             };
 
             const date = new Date().toUTCString();
@@ -261,7 +261,7 @@ const uploadTargetImageToVuforiaCloudDatabase = (imageTarget, linkedAssetID, typ
             return axios
                 .post(`${constants.VUFORIA_SERVICE_URL}?action=createImageTarget`, data)
                 .then(response => {
-                    // console.log(response.data);
+                     console.log(response.data);
                     // Dispatch another action to consume data
                     if (response.status === 200) {
                         return true;
@@ -270,7 +270,7 @@ const uploadTargetImageToVuforiaCloudDatabase = (imageTarget, linkedAssetID, typ
                     }
                 })
                 .catch(error => {
-                    // console.log(error);
+                    console.log(error);
                     throw error;
                 });
 
@@ -308,6 +308,6 @@ const imageToBase64 = (image) => {
     });
 };
 
-const getLinkedAssetPublicURL = (linkedAssetID) => {
+const getLinkedAssetPublicURL = (linkedAssetID, type) => {
     return btoa(constants.GOOGLE_DRIVE_PUBLIC_URL + linkedAssetID);
 };
