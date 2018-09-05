@@ -152,7 +152,8 @@ class VideoAsset extends Component {
                                                         Upload Image Target
                                                     </span>
                                             </button>
-                                            <span className="badge badge-info text-warning" style={{backgroundColor: 'transparent'}}>(format: .jpg, .jpeg, .png)</span>
+                                            <span className="badge badge-info text-warning"
+                                                  style={{backgroundColor: 'transparent'}}>(format: .jpg, .jpeg, .png)</span>
                                         </div>
                                         <div className="col"
                                              style={{
@@ -185,7 +186,8 @@ class VideoAsset extends Component {
                                                         Upload Linked Video
                                                     </span>
                                             </button>
-                                            <span className="badge badge-info text-danger" style={{backgroundColor: 'transparent'}}>(format: .mp4, .avi, .3gp)</span>
+                                            <span className="badge badge-info text-danger"
+                                                  style={{backgroundColor: 'transparent'}}>(format: .mp4, .avi, .3gp)</span>
                                         </div>
                                         <div className="col"
                                              style={{
@@ -222,7 +224,7 @@ const mapStateToProps = (state) => {
     return {
         userReducer: state.userReducer,
         globalReducer: state.globalReducer,
-        artemplateReducer: state.artemplateReducer
+        artemplateReducer: state.artemplateReducer.videoAsset
     }
 };
 

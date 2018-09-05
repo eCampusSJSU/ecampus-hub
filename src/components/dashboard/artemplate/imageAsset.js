@@ -224,7 +224,7 @@ const mapStateToProps = (state) => {
     return {
         userReducer: state.userReducer,
         globalReducer: state.globalReducer,
-        artemplateReducer: state.artemplateReducer
+        artemplateReducer: state.artemplateReducer.imageAsset
     }
 };
 
