@@ -5,6 +5,80 @@ import hmacsha1 from 'hmacsha1';
 import md5 from 'md5';
 import * as constants from "../common/constants";
 
+export const addImageAsset = (imageTarget, linkedImage, token) => {
+    // function that dispatches an action at a later time
+    return (dispatch) => {
+
+        if (imageTarget === undefined || linkedImage === undefined) {
+            return dispatch(Notifications.error({
+                title: 'Error',
+                message: displayText.NO_FILE_ERROR,
+                position: 'tr'
+            }));
+        } else if (!(imageTarget.mimeType === 'image/jpeg' || imageTarget.mimeType === 'image/png')
+            || !(linkedImage.mimeType === 'image/jpeg' || linkedImage.mimeType === 'image/png'
+                || linkedImage.mimeType === 'image/gif')) {
+            return dispatch(Notifications.error({
+                title: 'Error',
+                message: displayText.INVALID_FILE_FORMAT_ERROR,
+                position: 'tr'
+            }));
+        } else if (!token) {
+            return dispatch(Notifications.error({
+                title: 'Error',
+                message: displayText.ERROR_MESSAGE,
+                position: 'tr'
+            }));
+        }
+
+        dispatch({
+            type: actionTypes.ADD_IMAGE_ASSET,
+            status: 'WAITING'
+        });
+
+        // Returns a promise
+        return uploadFileToGoogleDrive(linkedImage, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': linkedImage.mimeType
+            }
+        }, token)
+            .then(id => {
+                return uploadTargetImageToVuforiaCloudDatabase(imageTarget, id, 'image')
+                    .then(success => {
+                        if (success) {
+                            dispatch(Notifications.success({
+                                title: 'Success',
+                                message: 'Added image asset successfully.',
+                                position: 'tr'
+                            }));
+                            return dispatch({
+                                type: actionTypes.ADD_IMAGE_ASSET,
+                                status: 'SUCCESS'
+                            });
+                        } else {
+                            throw {error: "error"};
+                        }
+                    })
+                    .catch(error => {
+                        throw error;
+                    });
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.ADD_IMAGE_ASSET,
+                    status: 'ERROR',
+                    message: displayText.ERROR_MESSAGE
+                });
+                dispatch(Notifications.error({
+                    title: 'Error',
+                    message: displayText.ERROR_MESSAGE,
+                    position: 'tr'
+                }));
+            });
+    };
+};
+
 export const addVideoAsset = (imageTarget, linkedVideo, token) => {
     // function that dispatches an action at a later time
     return (dispatch) => {
@@ -44,7 +118,7 @@ export const addVideoAsset = (imageTarget, linkedVideo, token) => {
             }
         }, token)
             .then(id => {
-                return uploadTargetImageToVuforiaCloudDatabase(imageTarget, id)
+                return uploadTargetImageToVuforiaCloudDatabase(imageTarget, id, 'video')
                     .then(success => {
                         if (success) {
                             dispatch(Notifications.success({
@@ -156,7 +230,7 @@ const createPermissionsForFileOnGoogleDrive = (fileId, permissions, config) => {
         });
 };
 
-const uploadTargetImageToVuforiaCloudDatabase = (imageTarget, linkedVideoID) => {
+const uploadTargetImageToVuforiaCloudDatabase = (imageTarget, linkedAssetID, type) => {
     return imageToBase64(imageTarget.content)
         .then(image => {
             if (image === undefined) {
@@ -167,7 +241,7 @@ const uploadTargetImageToVuforiaCloudDatabase = (imageTarget, linkedVideoID) => 
                 "width": 1,
                 "image": image,
                 "active_flag": true,
-                "application_metadata": getLinkedVideoPublicURL(linkedVideoID)
+                "application_metadata": getLinkedAssetPublicURL(linkedAssetID) + ';' + type
             };
 
             const date = new Date().toUTCString();
@@ -234,6 +308,6 @@ const imageToBase64 = (image) => {
     });
 };
 
-const getLinkedVideoPublicURL = (linkedVideoID) => {
-    return btoa(constants.GOOGLE_DRIVE_PUBLIC_URL + linkedVideoID);
+const getLinkedAssetPublicURL = (linkedAssetID) => {
+    return btoa(constants.GOOGLE_DRIVE_PUBLIC_URL + linkedAssetID);
 };
