@@ -153,6 +153,83 @@ export const addVideoAsset = (imageTarget, linkedVideo, token) => {
     };
 };
 
+const getExtension = (fileName) => {
+    return fileName.substr(fileName.length - 4);
+};
+
+export const addModelAsset = (imageTarget, linkedModel, token) => {
+    // function that dispatches an action at a later time
+    return (dispatch) => {
+
+        if (imageTarget === undefined || linkedModel === undefined) {
+            return dispatch(Notifications.error({
+                title: 'Error',
+                message: displayText.NO_FILE_ERROR,
+                position: 'tr'
+            }));
+        } else if (!(imageTarget.mimeType === 'image/jpeg' || imageTarget.mimeType === 'image/png')
+            || !(getExtension(linkedModel.name) === '.obj')) {
+            return dispatch(Notifications.error({
+                title: 'Error',
+                message: displayText.INVALID_FILE_FORMAT_ERROR,
+                position: 'tr'
+            }));
+        } else if (!token) {
+            return dispatch(Notifications.error({
+                title: 'Error',
+                message: displayText.ERROR_MESSAGE,
+                position: 'tr'
+            }));
+        }
+
+        dispatch({
+            type: actionTypes.ADD_MODEL_ASSET,
+            status: 'WAITING'
+        });
+
+        // Returns a promise
+        return uploadFileToGoogleDrive(linkedModel, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': linkedModel.mimeType
+            }
+        }, token)
+            .then(id => {
+                return uploadTargetImageToVuforiaCloudDatabase(imageTarget, id, 'model')
+                    .then(success => {
+                        if (success) {
+                            dispatch(Notifications.success({
+                                title: 'Success',
+                                message: 'Added video asset successfully.',
+                                position: 'tr'
+                            }));
+                            return dispatch({
+                                type: actionTypes.ADD_MODEL_ASSET,
+                                status: 'SUCCESS'
+                            });
+                        } else {
+                            throw {error: "error"};
+                        }
+                    })
+                    .catch(error => {
+                        throw error;
+                    });
+            })
+            .catch(error => {
+                dispatch({
+                    type: actionTypes.ADD_MODEL_ASSET,
+                    status: 'ERROR',
+                    message: displayText.ERROR_MESSAGE
+                });
+                dispatch(Notifications.error({
+                    title: 'Error',
+                    message: displayText.ERROR_MESSAGE,
+                    position: 'tr'
+                }));
+            });
+    };
+};
+
 const uploadFileToGoogleDrive = (file, config, token) => {
     return axios
         .post(`${constants.GOOGLE_DRIVE_UPLOAD_FILE_API}`, file.content, config)

@@ -27,6 +27,9 @@ export default (state = {
             },
         },
         Dismiss: {
+            DefaultStyle: { // Applied to every notification, regardless of the notification level
+                marginRight: '10px'
+            },
             success: { // Applied only to the success notification item
                 backgroundColor: '#8EF3C5',
                 color: '#42A084',

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Footer, Header, Navigation} from "../../index";
-import {VideoAsset, ImageAsset} from "../../index";
+import {VideoAsset, ImageAsset, ModelAsset} from "../../index";
 import {bindActionCreators} from "redux";
 import * as userActions from "../../../actions/user";
 import connect from "react-redux/es/connect/connect";
@@ -74,6 +74,7 @@ class ARTemplate extends Component {
                             <div className="container-fluid">
                                 <ImageAsset/>
                                 <VideoAsset/>
+                                <ModelAsset/>
                             </div>
                         </div>
 

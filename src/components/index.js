@@ -10,6 +10,8 @@ export {default as SignIn}
 from "./common/signin";
 export {default as ARTemplate}
 from "./dashboard/artemplate/artemplate";
+export {default as ModelAsset}
+    from "./dashboard/artemplate/modelAsset";
 export {default as VideoAsset}
 from "./dashboard/artemplate/videoAsset";
 export {default as ImageAsset}
