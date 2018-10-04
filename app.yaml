@@ -7,6 +7,5 @@ handlers:
   static_files: build/index.html
   upload: build/index.html
 
-- url: /(.*)
-  static_files: build/\1
-  upload: build/(.*)
+- url: /
+  static_dir: build

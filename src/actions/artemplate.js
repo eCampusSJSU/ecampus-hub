@@ -65,14 +65,16 @@ export const addImageAsset = (imageTarget, linkedImage, token) => {
                     });
             })
             .catch(error => {
+                if (!error) error = '';
+                else error = error + '. ';
                 dispatch({
                     type: actionTypes.ADD_IMAGE_ASSET,
                     status: 'ERROR',
-                    message: displayText.ERROR_MESSAGE
+                    message: error + displayText.ERROR_MESSAGE
                 });
                 dispatch(Notifications.error({
                     title: 'Error',
-                    message: displayText.ERROR_MESSAGE,
+                    message: error + displayText.ERROR_MESSAGE,
                     position: 'tr'
                 }));
             });
@@ -139,14 +141,16 @@ export const addVideoAsset = (imageTarget, linkedVideo, token) => {
                     });
             })
             .catch(error => {
+                if (!error) error = '';
+                else error = error + '. ';
                 dispatch({
                     type: actionTypes.ADD_VIDEO_ASSET,
                     status: 'ERROR',
-                    message: displayText.ERROR_MESSAGE
+                    message: error + displayText.ERROR_MESSAGE
                 });
                 dispatch(Notifications.error({
                     title: 'Error',
-                    message: displayText.ERROR_MESSAGE,
+                    message: error + displayText.ERROR_MESSAGE,
                     position: 'tr'
                 }));
             });
@@ -216,14 +220,16 @@ export const addModelAsset = (imageTarget, linkedModel, token) => {
                     });
             })
             .catch(error => {
+                if (!error) error = '';
+                else error = error + '. ';
                 dispatch({
                     type: actionTypes.ADD_MODEL_ASSET,
                     status: 'ERROR',
-                    message: displayText.ERROR_MESSAGE
+                    message: error + displayText.ERROR_MESSAGE
                 });
                 dispatch(Notifications.error({
                     title: 'Error',
-                    message: displayText.ERROR_MESSAGE,
+                    message: error + displayText.ERROR_MESSAGE,
                     position: 'tr'
                 }));
             });
@@ -346,9 +352,8 @@ const uploadTargetImageToVuforiaCloudDatabase = (imageTarget, linkedAssetID, typ
                         throw {error: "error"};
                     }
                 })
-                .catch(error => {
-                    // console.log(error);
-                    throw error;
+                .catch((error) => {
+                    throw error.response.data.result_code;
                 });
 
         })
